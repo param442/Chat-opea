@@ -1,0 +1,25 @@
+{
+  "builds": [
+    {
+      "src": "apps/express/package.json",
+      "use": "@vercel/node",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/apps/express/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/$1"
+    }
+  ]
+}
