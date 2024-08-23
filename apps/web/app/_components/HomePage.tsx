@@ -7,7 +7,7 @@ import Message from '@repo/ui/Message';
 import Send from '@repo/ui/Send';
 import { IoIosSearch } from 'react-icons/io';
 import { TypeClient } from '@repo/ui/Message';
-import { UserType, MessageType, Message as message } from '@repo/types/types';
+import { UserType, Message as message } from '@repo/types/types';
 import WelcomeScreen from './WelcomeScreen';
 import { signOut, useSession } from 'next-auth/react';
 import Getimg from '../_hooks/Getimg';

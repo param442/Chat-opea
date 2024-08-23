@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_PATH=. ts-node-dev --transpile-only --require dotenv/config ./src/index.ts",
     "start": "cross-env NODE_PATH=dist node dist/index.js",
-    "build": "tsup",
+    "build": "tsup && yarn start",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm *.tsbuildinfo",
     "test": "jest --setupFiles dotenv/config",
