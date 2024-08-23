@@ -11,7 +11,7 @@
     "./Error": "./src/Error.tsx",
     "./Success": "./src/Success.tsx",
     "./signup": "./src/Signup.tsx",
-    "./login": "./src/login.tsx",
+    "./login": "./src/Login.tsx",
     "./styles.css": "./dist/index.css",
     "./card": "./src/card.tsx",
     "./Navbar": "./src/Navbar.tsx",
