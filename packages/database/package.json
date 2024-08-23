@@ -1,0 +1,26 @@
+{
+  "name": "@repo/database",
+  "version": "1.0.0",
+  "description": "This repo provide data to all mono repo",
+  "main": "index.js",
+  "author": "Paramvir Singh",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./db": "./index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "prisma": "^5.17.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

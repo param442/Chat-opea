@@ -1,0 +1,26 @@
+{
+  "name": "@repo/lib",
+  "version": "1.0.0",
+  "description": "This is all the libality what project need",
+  "author": "Param",
+  "license": "MIT",
+  "private": true,
+  "exports": {
+    "./utils": "./utils.ts",
+    "./routes": "./routes.ts",
+    "./VerficationToken": "./verificationToken.ts",
+    "./SendEmail": "./SendEmail.ts",
+    "./FindToken": "./FindToken.ts",
+    "./GetUser": "./GetUser.ts",
+    "./Following": "./Following.ts"
+  },
+  "dependencies": {
+    "@repo/database": "*",
+    "clsx": "^2.1.1",
+    "nodemailer": "^6.9.14",
+    "tailwind-merge": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.15"
+  }
+}

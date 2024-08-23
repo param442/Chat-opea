@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthProvider {
+  GITHUB
+  GOOGLE
+  // Add more providers as needed
+}
+
+model User {
+  id               String         @id @default(cuid())
+  name             String
+  email            String         @unique
+  emailVerified    DateTime?      @map("email_verified")
+  image            String?
+  passwordHash     String? // Storing hashed passwords
+  accounts         Account[]
+  sessions         Session[]
+  followers        UserFollower[] @relation("UserFollowedBy")
+  following        UserFollower[] @relation("UserFollows")
+  blockedBy        Block[]        @relation("UserBlockedBy")
+  blocks           Block[]        @relation("UserBlocking")
+  twoFactorEnabled Boolean        @default(false)
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model UserFollower {
+  id          String @id @default(cuid())
+  followerId  String // User who follows
+  followingId String // User who is being followed
+  follower    User   @relation("UserFollows", fields: [followerId], references: [id])
+  following   User   @relation("UserFollowedBy", fields: [followingId], references: [id])
+  verified      Boolean @default(false)
+  @@unique([followerId, followingId]) // Ensures each follow relationship is unique
+  @@map("user_followers")
+}
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  Email     String
+  createdAt DateTime @default(now())
+  expires   DateTime
+
+  @@unique([Email, token])
+  @@map("verification_tokens")
+}
+
+model Block {
+  id        String   @id @default(cuid())
+  blockerId String // User who is blocking
+  blockedId String // User being blocked
+  createdAt DateTime @default(now())
+
+  blocker User @relation("UserBlocking", fields: [blockerId], references: [id])
+  blocked User @relation("UserBlockedBy", fields: [blockedId], references: [id])
+
+  @@unique([blockerId, blockedId]) // Each block relationship should be unique
+  @@map("blocks")
+}
+
+model Notification {
+  id            String   @id @default(cuid())
+  userId        String // User who will receive the notification
+  type          String // Type of notification, e.g., "follow"
+  content       String? // Notification message
+  isRead        Boolean  @default(false) // Whether the notification has been read
+  createdAt     DateTime @default(now()) // Timestamp of notification creation
+  followerName  String // Name of the follower (if applicable)
+  followerImage String? // URL or path to the follower's image (if applicable)
+  followerId    String
+
+  @@unique([userId, followerId])
+  @@map("notifications")
+}
+
+
+model Message {
+  id            String   @id @default(cuid())// Unique identifier for each message
+  from      String                                    // User ID of the sender
+  to        String                                    // User ID of the recipient
+  content   String                                    // Content of the message
+  timestamp DateTime @default(now())                  // Timestamp of when the message was sent
+  delivered Boolean  @default(false)                  // Delivery status of the message
+}
